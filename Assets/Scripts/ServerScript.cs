@@ -33,15 +33,10 @@ public class ServerScript : NetworkManager{
 	private void Start(){
 		NetworkTransport.Init ();
 		ConnectionConfig cc = new ConnectionConfig ();
-
 		ReliableChannel = cc.AddChannel (QosType.Reliable);
 		UnReliableChannel = cc.AddChannel (QosType.Unreliable);
-
 		HostTopology topology = new HostTopology (cc, MAX_PLAYERS);
-		//NetworkServer.Reset ();
 		HostId = NetworkTransport.AddHost (topology, port, null);
-		//Debug.Log (HostId);
-		//ConnectionId = NetworkTransport.Connect (HostId, "127.0.0.1", port, 0, out error);
 		isStarted = true;
 	}
 
@@ -72,11 +67,6 @@ public class ServerScript : NetworkManager{
 			Debug.Log ("Receiving from:" + connectionId + " : " + msg);
 
 			string[] splitData = msg.Split ('|');
-
-//			if (connectionId == 1)
-//				Send (msg, ReliableChannel, 2);
-//			else if (connectionId == 2)
-//				Send (msg, ReliableChannel, 1);
 
 			switch(splitData[0]){
 			case "NAMEIS":
@@ -118,8 +108,6 @@ public class ServerScript : NetworkManager{
 				dummyAndroid.white_turn = true;
 				dummyAndroid.black_turn = false;
 
-				//Transform tp = GameObject.Find (splitData [6]).GetComponent<Transform> ();
-				//promoted.transform.parent = tp;
 				break;
 			case "OVR":
 				dummyAndroid.Instance.GameOver (splitData[1]);
@@ -128,7 +116,6 @@ public class ServerScript : NetworkManager{
 				dummyAndroid.Instance.OnUserQuit ("White");
 				break;
 			default:
-				//Debug.Log("Invalid message:" +msg);
 				break;
 			}
 
@@ -139,7 +126,6 @@ public class ServerScript : NetworkManager{
 		}
 
 		if (isConnected && !loaded) {
-			//Debug.Log (isStarted);
 			loaded = true;
 
 			SceneManager.LoadScene ("Scene2");
